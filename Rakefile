@@ -17,8 +17,8 @@ end
 
 desc "migrate the database (options: VERSION=x, VERBOSE=false, SCOPE=blog)."
 task "db:migrate" do 
-  ActiveRecord::Migrator.migration_paths << File.dirname(__FILE__) + 'db/migrate'
-  ActiveRecod::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
+  ActiveRecord::Migrator.migrations_paths << File.dirname(__FILE__) + 'db/migrate'
+  ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
   ActiveRecord::Migrator.migrate(ActiveRecord::Migrator.migrations_paths, ENV["VERSION"] ? ENV["VERSION"].to_i : nil) do |migration|
     ENV["SCOPE"].blank? || (ENV["SCOPE"] == migration.scope)
   end
@@ -41,7 +41,7 @@ namespace :generate do
 
     puts "Creating #{path}"
     File.open(path, 'w+') do |f|
-      f.write("class #{name} < ActiveRecord::Migration \n def change \n end \nend")
+      f.write("class #{name} < ActiveRecord::Migration \n  def change \n  end \nend")
     end
   end
 end
